@@ -8,6 +8,15 @@ export const getContacts = () => async dispatch => {
   dispatch({ type: GET_CONTACTS, payload: response.data });
 }; // returns dispatch fn with action type and with data from the server
 
-export const deleteContact = id => ({ type: DELETE_CONTACT, payload: id });
+export const deleteContact = id => async dispatch => {
+  await Axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+  dispatch({ type: DELETE_CONTACT, payload: id });
+};
 
-export const addContact = contact => ({ type: ADD_CONTACT, payload: contact });
+export const addContact = contact => async dispatch => {
+  const response = await Axios.post(
+    "https://jsonplaceholder.typicode.com/users",
+    contact
+  );
+  dispatch({ type: ADD_CONTACT, payload: response.data });
+};
